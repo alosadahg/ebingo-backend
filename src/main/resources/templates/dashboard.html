@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<a th:href="@{'/new-game'}" class="btn btn-primary">Create New Game</a>
+<div th:if="${gameFound != 'Game not found'}">
+    <h6><span th:text="${nextBall}"></span></h6>
+    <h1>Game Code: <span th:text="${gameFound.gameCode}"></span></h1>
+    <table id="gameTable" class="table table-bordered table-striped" style="width: 80%;">
+        <tr th:each="rowNum : ${#numbers.sequence(0, 4)}">
+            <td>
+                <button th:switch="${rowNum}" class="btn btn-info btn-block">
+                    <span th:case="0">B</span>
+                    <span th:case="1">I</span>
+                    <span th:case="2">N</span>
+                    <span th:case="3">G</span>
+                    <span th:case="4">O</span>
+                </button>
+            </td>
+            <td th:each="colNum : ${#numbers.sequence(1, 15)}">
+                <button th:if="${gameFound.rolledNumbers != null and gameFound.rolledNumbers.contains((rowNum * 15) + colNum)}" th:text="${(rowNum * 15) + colNum}" class="btn btn-success btn-block"></button>
+                <button th:if="${gameFound.rolledNumbers == null or !gameFound.rolledNumbers.contains((rowNum * 15) + colNum)}" th:text="${(rowNum * 15) + colNum}" class="btn btn-secondary btn-block"></button>
+            </td>
+        </tr>
+    </table>
+    <a th:href="@{'/next-ball'}" class="btn btn-primary">Next Ball</a>
+</div>
+<div th:if="${gameFound == 'Game not found'}" class="alert alert-warning" role="alert">
+    Game not found.
+</div>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</html>
